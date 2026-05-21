@@ -1,29 +1,17 @@
-export default {
-  async fetch(request, env) {
+<script>
+async function submitData() {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
 
-    const url = new URL(request.url);
-
-    if (request.method === 'POST' && url.pathname === '/api/save') {
-
-      const data = await request.json();
-
-      const name = data.name;
-      const email = data.email;
-
-      await env.DB.prepare(
-        'INSERT INTO users (name, email) VALUES (?, ?)'
-      )
-      .bind(name, email)
-      .run();
-
-      return new Response('Data Saved Successfully', {
+    const response = await fetch('https://YOUR-WORKER-URL.workers.dev/api/save', {
+        method: 'POST',
         headers: {
-          'Content-Type': 'text/plain',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
-    }
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email })
+    });
 
-    return new Response('Worker Running');
-  }
-};
+    const result = await response.text();
+    alert(result);
+}
+</script>
