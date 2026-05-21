@@ -1,14 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Cloudflare Website</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Cloudflare Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f4f4f4;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #333;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Hello Cloudflare!</h1>
-    <p>My first deployed static website.</p>
+<div class="container">
+    <h2>User Form</h2>
 
-    <script src="script.js"></script>
+    <input type="text" id="name" placeholder="Enter Name">
+    <input type="email" id="email" placeholder="Enter Email">
+
+    <button onclick="submitData()">Submit</button>
+</div>
+
+<script>
+async function submitData() {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+
+    const response = await fetch('/api/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email })
+    });
+
+    const result = await response.text();
+    alert(result);
+}
+</script>
+
 </body>
 </html>
